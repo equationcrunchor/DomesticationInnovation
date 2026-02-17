@@ -112,7 +112,7 @@ public class TameableUtils {
             return commandableMob.getCommand() == 2;
         } else {
             CompoundTag tag = new CompoundTag();
-            tameable.addAdditionalSaveData(tag);
+            tameable.readAdditionalSaveData(tag);
             int command = -1;
             //compat with alexs mobs
             for (String s : tag.getAllKeys()) {
