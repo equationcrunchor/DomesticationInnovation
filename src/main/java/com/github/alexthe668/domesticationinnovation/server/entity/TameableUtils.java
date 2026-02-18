@@ -116,7 +116,7 @@ public class TameableUtils {
             int command = -1;
             //compat with alexs mobs
             for (String s : tag.getAllKeys()) {
-                if (s.endsWith("Command") && tag.contains(s, 1)) {
+                if (s.endsWith("Command") && tag.contains(s, 3)) {
                     command = tag.getInt(s);
                 }
             }
