@@ -111,6 +111,7 @@ public class TameableUtils {
         if (DomesticationMod.CONFIG.trinaryCommandSystem.get() && tameable instanceof IComandableMob commandableMob) {
             return commandableMob.getCommand() == 2;
         } else {
+            final ResourceLocation entityType = ForgeRegistries.ENTITY_TYPES.getKey(tameable.getType());
             CompoundTag tag = new CompoundTag();
             tameable.addAdditionalSaveData(tag);
             int command = -1;
@@ -121,7 +122,13 @@ public class TameableUtils {
                 }
             }
             if (command != -1) {
-                return command == 1;
+                if (entityType.getNamespace() == "alexsmobs") {
+                    // follow == 1 for Alex's Mobs mobs
+                    return command == 1;
+                } else {
+                    // follow == 2 for tameable in all of Alex's other mods
+                    return command == 2;
+                }
             } else if (tameable instanceof TamableAnimal animal) {
                 return !animal.isOrderedToSit();
             }
