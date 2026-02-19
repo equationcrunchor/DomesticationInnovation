@@ -138,7 +138,7 @@ public class TameableUtils {
                 }
             }
             if (command != -1) {
-                if (entityType.getNamespace() == "alexsmobs") {
+                if (entityType.getNamespace().equals("alexsmobs")) {
                     // follow == 1 for Alex's Mobs mobs
                     return command == 1;
                 } else {
