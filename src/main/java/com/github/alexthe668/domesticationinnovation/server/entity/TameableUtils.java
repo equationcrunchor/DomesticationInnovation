@@ -124,7 +124,7 @@ public class TameableUtils {
             // compat with Alex's mods
             final ResourceLocation entityType = ForgeRegistries.ENTITY_TYPES.getKey(tameable.getType());
 
-            if (LANTERN_EXCLUDES.contains(entityType)) {
+            if (entityType != null && LANTERN_EXCLUDES.contains(entityType)) {
                 // never teleport these entities; they don't follow
                 return false;
             }
@@ -138,7 +138,7 @@ public class TameableUtils {
                 }
             }
             if (command != -1) {
-                if (entityType.getNamespace().equals("alexsmobs")) {
+                if (entityType != null && entityType.getNamespace().equals("alexsmobs")) {
                     // follow == 1 for Alex's Mobs mobs
                     return command == 1;
                 } else {
