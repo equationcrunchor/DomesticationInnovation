@@ -138,8 +138,8 @@ public class TameableUtils {
                 }
             }
             if (command != -1) {
-                if (entityType != null && entityType.getNamespace().equals("alexsmobs")) {
-                    // follow == 1 for Alex's Mobs mobs
+                if (entityType != null && (entityType.getNamespace().equals("alexsmobs") || entityType.getNamespace().equals("fossil"))) {
+                    // follow == 1 for Alex's Mobs and Fossils and Archaeology
                     return command == 1;
                 } else {
                     // follow == 2 for tameable in all of Alex's other mods
