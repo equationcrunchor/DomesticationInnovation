@@ -108,6 +108,6 @@ public class DIConfig {
     }
 
     public boolean isEntityExcludedFromLantern(final ResourceLocation entityType) {
-        return lanternExcludes.get().contains(entityType.toString());
+        return lanternExcludes != null && lanternExcludes.get().contains(entityType.toString());
     }
 }
