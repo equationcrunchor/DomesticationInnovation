@@ -7,7 +7,9 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DIConfig {
@@ -25,6 +27,7 @@ public class DIConfig {
     public final ForgeConfigSpec.BooleanValue rabbitsScareRavagers;
     public final ForgeConfigSpec.BooleanValue animalTamerVillager;
     public final ForgeConfigSpec.IntValue petstoreVillageWeight;
+    private static ForgeConfigSpec.ConfigValue<List<? extends String>> lanternExcludes = null;
 
     public final ForgeConfigSpec.BooleanValue petCurseEnchantmentsLootOnly;
     public final ForgeConfigSpec.DoubleValue sinisterCarrotLootChance;
@@ -52,6 +55,22 @@ public class DIConfig {
         rabbitsScareRavagers = builder.comment("true if rabbits scare ravagers like they used to do").translation("rabbits_scare_ravagers").define("rabbits_scare_ravagers", true);
         animalTamerVillager = builder.comment("true if animal tamer villagers are enabled. Their work station is a pet bed").translation("animal_tamer_villager").define("animal_tamer_villager", true);
         petstoreVillageWeight = builder.comment("the spawn weight of the pet store in villages, set to 0 to disable it entirely").translation("petstore_village_weight").defineInRange("petstore_village_weight", 17, 0, 1000);
+
+        lanternExcludes = builder.comment("mobs to be excluded from wayward lantern teleportation (note: mobs in world already registered by lantern may still teleport once after changing config)")
+            .defineList(
+                "lantern_excludes",
+                Arrays.asList(
+                    "alexsmobs:elephant",
+                    "alexsmobs:gorilla",
+                    "alexsmobs:crocodile",
+                    "iceandfire:pixie",
+                    "iceandfire:hippogryph",
+                    "iceandfire:hippocampus",
+                    "iceandfire:deathworm"
+                ),
+                entry -> ResourceLocation.isValidResourceLocation((String)entry)
+        );
+
         builder.pop();
         builder.push("loot");
         petCurseEnchantmentsLootOnly = builder.comment("true if pet curse enchantments should only appear in loot, and not the enchanting table.").translation("pet_curse_enchantments_loot_only").define("pet_curse_enchantments_loot_only", true);
@@ -86,5 +105,9 @@ public class DIConfig {
     public boolean isEnchantEnabled(String enchantment){
         ForgeConfigSpec.BooleanValue entry = enabledEnchantments.get(enchantment);
         return entry == null || entry.get();
+    }
+
+    public boolean isEntityExcludedFromLantern(final ResourceLocation entityType) {
+        return lanternExcludes.get().contains(entityType.toString());
     }
 }

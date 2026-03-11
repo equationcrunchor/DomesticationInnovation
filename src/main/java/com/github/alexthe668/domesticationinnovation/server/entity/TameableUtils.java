@@ -74,16 +74,6 @@ public class TameableUtils {
 
     private static final UUID SPEED_BOOST_AQUATIC_LAND_UUID = UUID.fromString("ff465ded-9040-4eb5-93a1-7bbe97c31745");
 
-    private static final Set<ResourceLocation> LANTERN_EXCLUDES = Set.of(
-        new ResourceLocation("alexsmobs", "elephant"),
-        new ResourceLocation("alexsmobs", "gorilla"),
-        new ResourceLocation("alexsmobs", "crocodile"),
-        new ResourceLocation("iceandfire", "pixie"),
-        new ResourceLocation("iceandfire", "hippogryph"),
-        new ResourceLocation("iceandfire", "hippocampus"),
-        new ResourceLocation("iceandfire", "deathworm")
-    );
-
     public static boolean hasSameOwnerAs(LivingEntity tameable, Entity target) {
         return hasSameOwnerAsOneWay(tameable, target) || hasSameOwnerAsOneWay(target, tameable);
     }
@@ -118,17 +108,15 @@ public class TameableUtils {
     }
 
     public static boolean shouldUnloadToLantern(LivingEntity tameable) {
+        final ResourceLocation entityType = ForgeRegistries.ENTITY_TYPES.getKey(tameable.getType());
+        if (entityType != null && DomesticationMod.CONFIG.isEntityExcludedFromLantern(entityType)) {
+            return false;
+        }
+
         if (DomesticationMod.CONFIG.trinaryCommandSystem.get() && tameable instanceof IComandableMob commandableMob) {
             return commandableMob.getCommand() == 2;
         } else {
             // compat with Alex's mods
-            final ResourceLocation entityType = ForgeRegistries.ENTITY_TYPES.getKey(tameable.getType());
-
-            if (entityType != null && LANTERN_EXCLUDES.contains(entityType)) {
-                // never teleport these entities; they don't follow
-                return false;
-            }
-
             CompoundTag tag = new CompoundTag();
             tameable.addAdditionalSaveData(tag);
             int command = -1;
