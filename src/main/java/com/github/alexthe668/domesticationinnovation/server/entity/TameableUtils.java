@@ -135,6 +135,12 @@ public class TameableUtils {
             for (String s : tag.getAllKeys()) {
                 if (s.endsWith("Command") && tag.contains(s, 3)) {
                     command = tag.getInt(s);
+                    break;
+                }
+                // Fossils and Archaeology compat
+                if (s.equals("CurrentOrder") && tag.contains(s, 1)) {
+                    command = tag.getByte(s);
+                    break;
                 }
             }
             if (command != -1) {
